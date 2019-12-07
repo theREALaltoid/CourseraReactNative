@@ -5,13 +5,14 @@ import { DISHES } from "../shared/dishes";
 import { Tile } from "react-native-elements";
 
 import { connect } from "react-redux";
-import { baseUrl } from "../shared/baseUrl.js";
+import { baseUrl } from "../shared/baseUrl";
 
 const mapStateToProps = state => {
   return {
     dishes: state.dishes
   };
 };
+
 class Menu extends Component {
   constructor(props) {
     super(props);
@@ -32,7 +33,7 @@ class Menu extends Component {
           title={item.name}
           caption={item.description}
           featured
-          onPress={() => navigate("dishes", { dishId: item.id })}
+          onPress={() => navigate("DishDetail", { dishId: item.id })}
           imageSrc={{ uri: baseUrl + item.image }}
         />
       );
