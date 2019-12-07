@@ -6,6 +6,14 @@ import { Card } from "react-native-elements";
 import { DISHES } from "../shared/dishes";
 import { PROMOTIONS } from "../shared/promotions";
 import { LEADERS } from "../shared/leaders";
+import { connect } from "react-redux";
+import { baseUrl } from "../shared/baseUrl";
+
+const mapStateToProps = state => {
+  return {
+    leaders: state.leaders
+  };
+};
 
 class About extends Component {
   constructor(props) {
@@ -20,14 +28,14 @@ class About extends Component {
   };
 
   render() {
-    const history = this.state.leaders.map(data => {
+    const history = this.props.leaders.leaders.map(data => {
       return (
         <View>
           <ListItem
             title={data.name}
             subtitle={data.description}
             hideChevron={true}
-            leftAvatar={{ source: require("./images/alberto.png") }}
+            leftAvatar={{ source: { uri: baseUrl + data.image } }}
           />
         </View>
       );
@@ -63,4 +71,4 @@ class About extends Component {
     );
   }
 }
-export default About;
+export default connect(mapStateToProps)(About);
