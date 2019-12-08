@@ -4,13 +4,21 @@ import { Card } from "react-native-elements";
 import { DISHES } from "../shared/dishes";
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
+import { postFavorite } from "../redux/ActionCreators";
+import { Icon } from "react-native-elements";
 
 const mapStateToProps = state => {
   return {
     dishes: state.dishes,
-    comments: state.comments
+    comments: state.comments,
+    favorites: state.favorites
   };
 };
+
+const mapDispatchToProps = dispatch => ({
+  postFavorite: dishId => dispatch(postFavorite(dishId))
+});
+
 function RenderDish(props) {
   const dish = props.dish;
 
@@ -18,6 +26,16 @@ function RenderDish(props) {
     return (
       <Card featuredTitle={dish.name} image={{ uri: baseUrl + dish.image }}>
         <Text style={{ margin: 10 }}>{dish.description}</Text>
+        <Icon
+          raised
+          reverse
+          name={props.favorite ? "heart" : "heart-o"}
+          type="font-awesome"
+          color="#f50"
+          onPress={() =>
+            props.favorite ? console.log("Already favorite") : props.onPress()
+          }
+        />
       </Card>
     );
   } else {
@@ -57,7 +75,9 @@ class DishDetail extends Component {
   static navigationOptions = {
     title: "Dish Details"
   };
-
+  markFavorite(dishId) {
+    this.props.postFavorite(dishId);
+  }
   render() {
     const dishId = this.props.navigation.getParam("dishId", "");
     return (
@@ -65,6 +85,7 @@ class DishDetail extends Component {
         <RenderDish
           dish={this.props.dishes.dishes[+dishId]}
           onPress={() => this.markFavorite(dishId)}
+          favorite={this.props.favorites.some(el => el === dishId)}
         />
         <RenderComments
           comments={this.props.comments.comments.filter(
@@ -75,4 +96,7 @@ class DishDetail extends Component {
     );
   }
 }
-export default connect(mapStateToProps)(DishDetail);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DishDetail);
