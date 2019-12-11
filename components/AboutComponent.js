@@ -9,6 +9,7 @@ import { PROMOTIONS } from "../shared/promotions";
 import { LEADERS } from "../shared/leaders";
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
+import * as Animatable from "react-native-animatable";
 
 const mapStateToProps = state => {
   return {
@@ -45,19 +46,23 @@ class About extends Component {
     if (this.props.leaders.isLoading) {
       return (
         <ScrollView>
-          <History />
-          <Card title="Corporate Leadership">
-            <Loading />
-          </Card>
+          <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+            <History />
+            <Card title="Corporate Leadership">
+              <Loading />
+            </Card>
+          </Animatable.View>
         </ScrollView>
       );
     } else if (this.props.leaders.errMess) {
       return (
         <ScrollView>
-          <History />
-          <Card title="Corporate Leadership">
-            <Text>{this.props.leaders.errMess}</Text>
-          </Card>
+          <Animatable.View animation="fadeInDown" duration={2000} delay={1000}>
+            <History />
+            <Card title="Corporate Leadership">
+              <Text>{this.props.leaders.errMess}</Text>
+            </Card>
+          </Animatable.View>
         </ScrollView>
       );
     } else {
@@ -84,9 +89,15 @@ class About extends Component {
                 </Text>
               </View>
             </Card>
-            <Card title="Corporate Leadership">
-              <View>{history}</View>
-            </Card>
+            <Animatable.View
+              animation="fadeInDown"
+              duration={2000}
+              delay={1000}
+            >
+              <Card title="Corporate Leadership">
+                <View>{history}</View>
+              </Card>
+            </Animatable.View>
           </View>
         </ScrollView>
       );
