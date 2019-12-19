@@ -9,7 +9,8 @@
     "json": "json-server --watch db.json -p 3001 -d 2000 -H 192.168.1.66"
   },
   "dependencies": {
-    "expo": "^35.0.0",
+    "expo": "^36.0.0",
+    "expo-secure-store": "^8.0.0",
     "react": "16.8.3",
     "react-dom": "16.8.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
