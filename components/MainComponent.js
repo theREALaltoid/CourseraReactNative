@@ -1,35 +1,37 @@
-import React, { Component } from "react";
-import Menu from "./MenuComponent";
-import DishDetail from "./DishDetailComponent";
-import Contact from "./ContactComponent";
-import Home from "./HomeComponent";
-import About from "./AboutComponent";
-import Favorites from "./FavoriteComponent";
-import Login from "./LoginComponent";
+import React, { Component } from 'react'
+import Menu from './MenuComponent'
+import DishDetail from './DishDetailComponent'
+import Contact from './ContactComponent'
+import Home from './HomeComponent'
+import About from './AboutComponent'
+import Favorites from './FavoriteComponent'
+import Login from './LoginComponent'
 import {
   View,
   Platform,
   Image,
   StyleSheet,
   ScrollView,
-  Text
-} from "react-native";
-import { Icon } from "react-native-elements";
-import { connect } from "react-redux";
+  Text,
+  NetInfo,
+  ToastAndroid
+} from 'react-native'
+import { Icon } from 'react-native-elements'
+import { connect } from 'react-redux'
 import {
   fetchDishes,
   fetchComments,
   fetchPromos,
   fetchLeaders
-} from "../redux/ActionCreators";
+} from '../redux/ActionCreators'
 import {
   createStackNavigator,
   createDrawerNavigator,
   DrawerItems,
   SafeAreaView
-} from "react-navigation";
-import { DISHES } from "../shared/dishes";
-import Reservation from "./ReservationComponent";
+} from 'react-navigation'
+import { DISHES } from '../shared/dishes'
+import Reservation from './ReservationComponent'
 
 const mapStateToProps = state => {
   return {
@@ -37,15 +39,15 @@ const mapStateToProps = state => {
     comments: state.comments,
     promotions: state.promotions,
     leaders: state.leaders
-  };
-};
+  }
+}
 
 const mapDispatchToProps = dispatch => ({
   fetchDishes: () => dispatch(fetchDishes()),
   fetchComments: () => dispatch(fetchComments()),
   fetchPromos: () => dispatch(fetchPromos()),
   fetchLeaders: () => dispatch(fetchLeaders())
-});
+})
 
 const ReservationNavigator = createStackNavigator(
   {
@@ -54,23 +56,23 @@ const ReservationNavigator = createStackNavigator(
   {
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
-        backgroundColor: "#512DA8"
+        backgroundColor: '#512DA8'
       },
       headerTitleStyle: {
-        color: "#fff"
+        color: '#fff'
       },
-      headerTintColor: "#fff",
+      headerTintColor: '#fff',
       headerLeft: (
         <Icon
           name="menu"
           size={24}
-          iconStyle={{ color: "white" }}
+          iconStyle={{ color: 'white' }}
           onPress={() => navigation.toggleDrawer()}
         />
       )
     })
   }
-);
+)
 
 const FavoritesNavigator = createStackNavigator(
   {
@@ -79,23 +81,23 @@ const FavoritesNavigator = createStackNavigator(
   {
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
-        backgroundColor: "#512DA8"
+        backgroundColor: '#512DA8'
       },
       headerTitleStyle: {
-        color: "#fff"
+        color: '#fff'
       },
-      headerTintColor: "#fff",
+      headerTintColor: '#fff',
       headerLeft: (
         <Icon
           name="menu"
           size={24}
-          iconStyle={{ color: "white" }}
+          iconStyle={{ color: 'white' }}
           onPress={() => navigation.toggleDrawer()}
         />
       )
     })
   }
-);
+)
 
 const MenuNavigator = createStackNavigator(
   {
@@ -115,18 +117,18 @@ const MenuNavigator = createStackNavigator(
     DishDetail: { screen: DishDetail }
   },
   {
-    initialRouteName: "Menu",
+    initialRouteName: 'Menu',
     navigationOptions: {
       headerStyle: {
-        backgroundColor: "#512DA8"
+        backgroundColor: '#512DA8'
       },
-      headerTintColor: "#fff",
+      headerTintColor: '#fff',
       headerTitleStyle: {
-        color: "#fff"
+        color: '#fff'
       }
     }
   }
-);
+)
 const ContactNavigator = createStackNavigator(
   {
     Contact: { screen: Contact }
@@ -134,11 +136,11 @@ const ContactNavigator = createStackNavigator(
   {
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
-        backgroundColor: "#512DA8"
+        backgroundColor: '#512DA8'
       },
-      headerTintColor: "#fff",
+      headerTintColor: '#fff',
       headerTitleStyle: {
-        color: "#fff"
+        color: '#fff'
       },
       headerLeft: (
         <Icon
@@ -150,7 +152,7 @@ const ContactNavigator = createStackNavigator(
       )
     })
   }
-);
+)
 const AboutNavigator = createStackNavigator(
   {
     About: { screen: About }
@@ -158,12 +160,12 @@ const AboutNavigator = createStackNavigator(
   {
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
-        backgroundColor: "#512DA8"
+        backgroundColor: '#512DA8'
       },
       headerTitleStyle: {
-        color: "#fff"
+        color: '#fff'
       },
-      headerTintColor: "#fff",
+      headerTintColor: '#fff',
       headerLeft: (
         <Icon
           name="menu"
@@ -174,7 +176,7 @@ const AboutNavigator = createStackNavigator(
       )
     })
   }
-);
+)
 const HomeNavigator = createStackNavigator(
   {
     Home: { screen: Home }
@@ -182,12 +184,12 @@ const HomeNavigator = createStackNavigator(
   {
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
-        backgroundColor: "#512DA8"
+        backgroundColor: '#512DA8'
       },
       headerTitleStyle: {
-        color: "#fff"
+        color: '#fff'
       },
-      headerTintColor: "#fff",
+      headerTintColor: '#fff',
       headerLeft: (
         <Icon
           name="menu"
@@ -198,7 +200,7 @@ const HomeNavigator = createStackNavigator(
       )
     })
   }
-);
+)
 const LoginNavigator = createStackNavigator(
   {
     Login: { screen: Login }
@@ -206,12 +208,12 @@ const LoginNavigator = createStackNavigator(
   {
     navigationOptions: ({ navigation }) => ({
       headerStyle: {
-        backgroundColor: "#512DA8"
+        backgroundColor: '#512DA8'
       },
       headerTitleStyle: {
-        color: "#fff"
+        color: '#fff'
       },
-      headerTintColor: "#fff",
+      headerTintColor: '#fff',
       headerLeft: (
         <Icon
           name="menu"
@@ -222,18 +224,17 @@ const LoginNavigator = createStackNavigator(
       )
     })
   }
-);
+)
 
 const CustomDrawerContentComponent = props => (
   <ScrollView>
     <SafeAreaView
       style={styles.container}
-      forceInset={{ top: "always", horizontal: "never" }}
-    >
+      forceInset={{ top: 'always', horizontal: 'never' }}>
       <View style={styles.drawerHeader}>
         <View style={{ flex: 1 }}>
           <Image
-            source={require("./images/logo.png")}
+            source={require('./images/logo.png')}
             style={styles.drawerImage}
           />
         </View>
@@ -244,15 +245,15 @@ const CustomDrawerContentComponent = props => (
       <DrawerItems {...props} />
     </SafeAreaView>
   </ScrollView>
-);
+)
 
 const MainNavigator = createDrawerNavigator(
   {
     Login: {
       screen: LoginNavigator,
       navigationOptions: {
-        title: "Login",
-        drawerLabel: "Login",
+        title: 'Login',
+        drawerLabel: 'Login',
         drawerIcon: ({ tintColor }) => (
           <Icon
             name="sign-in"
@@ -266,8 +267,8 @@ const MainNavigator = createDrawerNavigator(
     Home: {
       screen: HomeNavigator,
       navigationOptions: {
-        title: "Home",
-        drawerLabel: "Home",
+        title: 'Home',
+        drawerLabel: 'Home',
         drawerIcon: ({ tintColor }) => (
           <Icon name="home" type="font-awesome" size={24} color={tintColor} />
         )
@@ -276,8 +277,8 @@ const MainNavigator = createDrawerNavigator(
     Contact: {
       screen: ContactNavigator,
       navigationOptions: {
-        title: "Contact Us",
-        drawerLabel: "Contact Us",
+        title: 'Contact Us',
+        drawerLabel: 'Contact Us',
         drawerIcon: ({ tintColor }) => (
           <Icon
             name="address-card"
@@ -291,8 +292,8 @@ const MainNavigator = createDrawerNavigator(
     Menu: {
       screen: MenuNavigator,
       navigationOptions: {
-        title: "Menu",
-        drawerLabel: "Menu",
+        title: 'Menu',
+        drawerLabel: 'Menu',
         drawerIcon: ({ tintColor }) => (
           <Icon name="list" type="font-awesome" size={24} color={tintColor} />
         )
@@ -302,8 +303,8 @@ const MainNavigator = createDrawerNavigator(
     About: {
       screen: AboutNavigator,
       navigationOptions: {
-        title: "About Us",
-        drawerLabel: "About Us",
+        title: 'About Us',
+        drawerLabel: 'About Us',
         drawerIcon: ({ tintColor }) => (
           <Icon
             name="info-circle"
@@ -317,8 +318,8 @@ const MainNavigator = createDrawerNavigator(
     Favorites: {
       screen: FavoritesNavigator,
       navigationOptions: {
-        title: "My Favorites",
-        drawerLabel: "My Favorites",
+        title: 'My Favorites',
+        drawerLabel: 'My Favorites',
         drawerIcon: ({ tintColor, focused }) => (
           <Icon
             name="heart"
@@ -332,8 +333,8 @@ const MainNavigator = createDrawerNavigator(
     Reservation: {
       screen: ReservationNavigator,
       navigationOptions: {
-        title: "Reserve Table",
-        drawerLabel: "Reserve Table",
+        title: 'Reserve Table',
+        drawerLabel: 'Reserve Table',
         drawerIcon: ({ tintColor, focused }) => (
           <Icon
             name="cutlery"
@@ -347,69 +348,107 @@ const MainNavigator = createDrawerNavigator(
   },
 
   {
-    initialRouteName: "Home",
-    drawerBackgroundColor: "#D1C4E9",
+    initialRouteName: 'Home',
+    drawerBackgroundColor: '#D1C4E9',
     contentComponent: CustomDrawerContentComponent
   }
-);
+)
 const styles = StyleSheet.create({
   container: {
     flex: 1
   },
   drawerHeader: {
-    backgroundColor: "#512DA8",
+    backgroundColor: '#512DA8',
     height: 140,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     flex: 1,
-    flexDirection: "row"
+    flexDirection: 'row'
   },
   drawerHeaderText: {
-    color: "white",
+    color: 'white',
     fontSize: 24,
-    fontWeight: "bold"
+    fontWeight: 'bold'
   },
   drawerImage: {
     margin: 10,
     width: 80,
     height: 60
   }
-});
+})
 class Main extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       dishes: DISHES,
       selectedDish: null
-    };
+    }
   }
   onDishSelect(dishId) {
-    this.setState({ selectedDish: dishId });
+    this.setState({ selectedDish: dishId })
   }
 
   componentDidMount() {
-    this.props.fetchDishes();
-    this.props.fetchComments();
-    this.props.fetchPromos();
-    this.props.fetchLeaders();
+    this.props.fetchDishes()
+    this.props.fetchComments()
+    this.props.fetchPromos()
+    this.props.fetchLeaders()
+
+    NetInfo.getConnectionInfo().then(connectionInfo => {
+      ToastAndroid.show(
+        'Initial Network Connectivity Type: ' +
+          connectionInfo.type +
+          ', effectiveType: ' +
+          connectionInfo.effectiveType,
+        ToastAndroid.LONG
+      )
+    })
+
+    NetInfo.addEventListener('connectionChange', this.handleConnectivityChange)
   }
 
+  componentWillUnmount() {
+    NetInfo.removeEventListener(
+      'connectionChange',
+      this.handleConnectivityChange
+    )
+  }
+  handleConnectivityChange = conectionInfo => {
+    switch (conectionInfo.type) {
+      case 'none':
+        ToastAndroid.show('You Are Now Offline', ToastAndroid.LONG)
+        break
+      case 'wifi':
+        ToastAndroid.show('You Are Now On Wifi', ToastAndroid.LONG)
+
+      case 'celluar':
+        ToastAndroid.show('You Are Now On Celluar', ToastAndroid.LONG)
+
+      case 'unknown':
+        ToastAndroid.show(
+          'You Are Now An unknown connection',
+          ToastAndroid.LONG
+        )
+
+      default:
+        break
+    }
+  }
   render() {
     return (
       <View
         style={{
           flex: 1,
-          paddingTop: Platform.OS === "ios" ? 0 : Expo.Constants.statusBarHeight
-        }}
-      >
+          paddingTop: Platform.OS === 'ios' ? 0 : Expo.Constants.statusBarHeight
+        }}>
         <MainNavigator />
       </View>
-    );
+    )
   }
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Main);
+)(Main)
