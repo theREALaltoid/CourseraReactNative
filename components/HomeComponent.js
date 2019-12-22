@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-
 import { Text, View, Animated, Easing } from "react-native";
 import { Card } from "react-native-elements";
 import { DISHES } from "../shared/dishes";
 import { PROMOTIONS } from "../shared/promotions";
 import { LEADERS } from "../shared/leaders";
 import { Loading } from "./LoadingComponent";
-
 import { connect } from "react-redux";
 import { baseUrl } from "../shared/baseUrl";
 import * as Animatable from "react-native-animatable";
@@ -21,7 +19,6 @@ const mapStateToProps = state => {
 
 function RenderItem(props) {
   const item = props.item;
-
   if (props.isLoading) {
     return <Loading />;
   } else if (props.errMess) {
@@ -36,9 +33,17 @@ function RenderItem(props) {
         <Card
           featuredTitle={item.name}
           featuredSubtitle={item.designation}
-          image={{ uri: baseUrl + item.image }}
+          image={{
+            uri: baseUrl + item.image
+          }}
         >
-          <Text style={{ margin: 10 }}>{item.description}</Text>
+          <Text
+            style={{
+              margin: 10
+            }}
+          >
+            {item.description}
+          </Text>
         </Card>
       );
     } else {
@@ -46,7 +51,6 @@ function RenderItem(props) {
     }
   }
 }
-
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -57,7 +61,6 @@ class Home extends Component {
     };
     this.animatedValue = new Animated.Value(0);
   }
-
   static navigationOptions = {
     title: "Home"
   };
@@ -85,11 +88,23 @@ class Home extends Component {
       inputRange: [0, 3, 5, 7, 8],
       outputRange: [1200, 600, 0, -600, -1200]
     });
-
     return (
-      <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          justifyContent: "center"
+        }}
+      >
         <Animated.View
-          style={{ width: "100%", transform: [{ translateX: xpos1 }] }}
+          style={{
+            width: "100%",
+            transform: [
+              {
+                translateX: xpos1
+              }
+            ]
+          }}
         >
           <RenderItem
             item={this.props.dishes.dishes.filter(dish => dish.featured)[0]}
@@ -98,7 +113,14 @@ class Home extends Component {
           />
         </Animated.View>
         <Animated.View
-          style={{ width: "100%", transform: [{ translateX: xpos2 }] }}
+          style={{
+            width: "100%",
+            transform: [
+              {
+                translateX: xpos2
+              }
+            ]
+          }}
         >
           <RenderItem
             item={
@@ -111,7 +133,14 @@ class Home extends Component {
           />
         </Animated.View>
         <Animated.View
-          style={{ width: "100%", transform: [{ translateX: xpos3 }] }}
+          style={{
+            width: "100%",
+            transform: [
+              {
+                translateX: xpos3
+              }
+            ]
+          }}
         >
           <RenderItem
             item={
@@ -125,5 +154,4 @@ class Home extends Component {
     );
   }
 }
-
 export default connect(mapStateToProps)(Home);

@@ -6,10 +6,18 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "json": "json-server --watch db.json -p 3001 -d 2000 -H 192.168.1.66"
+    "json": "json-server --watch db.json -p 3001 -d 2000 -H 192.168.1.66",
+    "prettier": "prettier '*.js'"
+  },
+  "prettier": {
+    "jsxBracketSameLine": true,
+    "semi": false,
+    "singleQuote": true
   },
   "dependencies": {
     "expo": "^36.0.0",
+    "expo-image-picker": "^8.0.1",
+    "expo-permissions": "^8.0.0",
     "expo-secure-store": "^8.0.0",
     "react": "16.8.3",
     "react-dom": "16.8.3",
