@@ -136,24 +136,19 @@ class RegisterTab extends Component {
       imageUrl: baseUrl + 'images/logo.png'
     }
   }
-
-  getImageFromCamera = async () => {
-    const cameraPermission = await Permissions.askAsync(Permissions.CAMERA)
+  getImageFromGallery = async () => {
     const cameraRollPermission = await Permissions.askAsync(
       Permissions.CAMERA_ROLL
     )
 
-    if (
-      cameraPermission.status === 'granted' &&
-      cameraRollPermission.status === 'granted'
-    ) {
-      let capturedImage = await ImagePicker.launchCameraAsync({
+    if (cameraRollPermission.status === 'granted') {
+      let selectedImage = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
         aspect: [4, 3]
       })
-      if (!capturedImage.cancelled) {
-        console.log(capturedImage)
-        this.setState({ imageUrl: capturedImage.uri })
+      if (!selectedImage.cancelled) {
+        console.log(selectedImage)
+        this.setState({ imageUrl: selectedImage.uri })
       }
     }
   }
@@ -173,7 +168,7 @@ class RegisterTab extends Component {
       })
       if (!capturedImage.cancelled) {
         console.log(capturedImage)
-        this.processImage(capturedImage.uri)
+        this.setState({ imageUrl: capturedImage.uri })
       }
     }
   }
@@ -218,10 +213,12 @@ class RegisterTab extends Component {
           <View style={styles.imageContainer}>
             <Image
               source={{ uri: this.state.imageUrl }}
-              loadingIndicatorSource={require('./images/logo.png')}
+              loadingIndicatorSour
+              ce={require('./images/logo.png')}
               style={styles.image}
             />
             <Button title="Camera" onPress={this.getImageFromCamera} />
+            <Button title="Gallery" onPress={this.getImageFromGallery} />
           </View>
           <Input
             placeholder="Username"
