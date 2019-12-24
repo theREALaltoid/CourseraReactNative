@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 
 import {
   Text,
@@ -10,95 +10,132 @@ import {
   Modal,
   ScrollView,
   Alert
-} from "react-native";
-import * as Animatable from "react-native-animatable";
-import { Card } from "react-native-elements";
-import DatePicker from "react-native-datepicker";
-import { Permissions, Notifications } from "expo";
+} from 'react-native'
+import * as Animatable from 'react-native-animatable'
+import { Card } from 'react-native-elements'
+import DatePicker from 'react-native-datepicker'
+import { Notifications } from 'expo'
+import * as Permissions from 'expo-permissions'
+import * as Calendar from 'expo-calendar'
 class Reservation extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       guests: 1,
       smoking: false,
-      date: "",
+      date: '',
       showModal: false
-    };
+    }
   }
 
   static navigationOptions = {
-    title: "Reserve Table"
-  };
+    title: 'Reserve Table'
+  }
 
   handleReservation = () => {
     Alert.alert(
-      "Your Reservation OK?",
-      "Number of Guests:" +
-        " " +
+      'Your Reservation OK?',
+      'Number of Guests:' +
+        ' ' +
         this.state.guests +
-        "\n" +
-        "Smoking?:" +
-        " " +
+        '\n' +
+        'Smoking?:' +
+        ' ' +
         this.state.smoking +
-        "\n" +
-        "Date and Time:" +
-        " " +
+        '\n' +
+        'Date and Time:' +
+        ' ' +
         this.state.date,
       [
         {
-          text: "Cancel",
+          text: 'Cancel',
           onPress: () => this.resetForm(),
-          style: "cancel"
+          style: 'cancel'
         },
         {
-          text: "OK",
+          text: 'OK',
           onPress: () => {
-            this.presentLocalNotifcation(this.state.date);
-            this.resetForm();
+            this.presentLocalNotification(this.state.date)
+            this.addReservationToCalendar(this.state.date)
+            this.resetForm()
           }
         }
       ],
       { cancelable: false }
-    );
-  };
+    )
+  }
   resetForm() {
     this.setState({
       guests: 1,
       smoking: false,
-      date: "",
+      date: '',
       showModal: false
-    });
+    })
   }
-  async obtainNotifcationPermission() {
-    let permission = await Permissions.askAsync(
-      Permissions.USER_FACING_NOTIFCATIONS
-    );
-    if (permission.status !== "granted") {
+
+  async obtainNotificationPermission() {
+    let permission = await Permissions.getAsync(
+      Permissions.USER_FACING_NOTIFICATIONS
+    )
+    if (permission.status !== 'granted') {
       permission = await Permissions.askAsync(
-        Permissions.USER_FACING_NOTIFCATIONS
-      );
-      if (permission.status !== "granted") {
-        ALert.alert("permission not granted to show Notifications");
+        Permissions.USER_FACING_NOTIFICATIONS
+      )
+      if (permission.status !== 'granted') {
+        Alert.alert('Permission not granted to show notifications')
       }
     }
-    return permission;
+    return permission
   }
-  async presentLocalNotifcation(data) {
-    await this.obtainNotifcationPermission;
-    Notifications.presentLocalNotifcationAsync({
-      title: "Your Reservation",
-      body: "Reservation for" + date + "requested",
+
+  async obtainCalendarPermission() {
+    let Calendarpermission = await Permissions.getAsync(Permissions.CALENDAR)
+    if (Calendarpermission.status !== 'granted') {
+      Calendarpermission = await Permissions.askAsync(Permissions.CALENDAR)
+      if (Calendarpermission.status !== 'granted') {
+        Alert.alert('Permission not granted to access the calendar')
+      }
+    }
+    return Calendarpermission
+  }
+
+  async presentLocalNotification(date) {
+    await this.obtainNotificationPermission()
+    Notifications.presentLocalNotificationAsync({
+      title: 'Your Reservation',
+      body: 'Reservation for ' + date + ' requested',
       ios: {
         sound: true
       },
       android: {
         sound: true,
         vibrate: true,
-        color: "#512DA8"
+        color: '#512DA8'
       }
-    });
+    })
   }
+
+  async addReservationToCalendar(date) {
+    await this.obtainCalendarPermission()
+    let calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT)
+    let localCalendar = calendars.filter(
+      calendar =>
+        calendar.isPrimary === true || calendar.source.isLocalAccount === true
+    )[0]
+    const startDate = new Date(Date.parse(date))
+    const endDate = new Date(Date.parse(date) + 2 * 60 * 60 * 1000)
+    Calendar.createEventAsync(localCalendar.id, {
+      title: 'Con Fusion Table Reservation',
+      location:
+        '121, Clear Water Bay Road, Clear Water Bay, Kowloon, Hong Kong',
+      startDate,
+      endDate,
+      timeZone: 'Asia/Hong_Kong'
+    })
+    Alert.alert('Event Id', calendar)
+  }
+
   render() {
     return (
       <ScrollView>
@@ -110,8 +147,7 @@ class Reservation extends Component {
               selectedValue={this.state.guests}
               onValueChange={(itemValue, itemIndex) =>
                 this.setState({ guests: itemValue })
-              }
-            >
+              }>
               <Picker.Item label="1" value="1" />
               <Picker.Item label="2" value="2" />
               <Picker.Item label="3" value="3" />
@@ -126,8 +162,9 @@ class Reservation extends Component {
               style={styles.formItem}
               value={this.state.smoking}
               onTintColor="#512DA8"
-              onValueChange={value => this.setState({ smoking: value })}
-            ></Switch>
+              onValueChange={value =>
+                this.setState({ smoking: value })
+              }></Switch>
           </View>
           <View style={styles.formRow}>
             <Text style={styles.formLabel}>Date and Time</Text>
@@ -142,7 +179,7 @@ class Reservation extends Component {
               cancelBtnText="Cancel"
               customStyles={{
                 dateIcon: {
-                  position: "absolute",
+                  position: 'absolute',
                   left: 0,
                   top: 4,
                   marginLeft: 0
@@ -153,7 +190,7 @@ class Reservation extends Component {
                 // ... You can check the source to find the other keys.
               }}
               onDateChange={date => {
-                this.setState({ date: date });
+                this.setState({ date: date })
               }}
             />
           </View>
@@ -166,21 +203,21 @@ class Reservation extends Component {
           </View>
         </Animatable.View>
       </ScrollView>
-    );
+    )
   }
 }
 
 const styles = StyleSheet.create({
   modal: {
-    justifyContent: "center",
+    justifyContent: 'center',
     margin: 20
   },
   modalTitle: {
     fontSize: 24,
-    fontWeight: "bold",
-    backgroundColor: "#512DA8",
-    textAlign: "center",
-    color: "white",
+    fontWeight: 'bold',
+    backgroundColor: '#512DA8',
+    textAlign: 'center',
+    color: 'white',
     marginBottom: 20
   },
   modalText: {
@@ -188,10 +225,10 @@ const styles = StyleSheet.create({
     margin: 10
   },
   formRow: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     margin: 20
   },
   formLabel: {
@@ -201,6 +238,6 @@ const styles = StyleSheet.create({
   formItem: {
     flex: 1
   }
-});
+})
 
-export default Reservation;
+export default Reservation
